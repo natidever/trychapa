@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:chapa_unofficial/chapa_unofficial.dart';
+import 'package:trychapa/afterpayment.dart';
 import 'package:trychapa/webview_checkout.dart';
 
 void main() {
@@ -32,7 +33,7 @@ class MyHomePage extends StatefulWidget {
 
   // This class is the configuration for the state. It holds the values (in this
   // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
+  // used by the build method of the State.f Fields in a Widget subclass are
   // always marked "final".
 
   final String title;
@@ -47,9 +48,18 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> pay() async {
     print('pay function start here ');
     String? paymentUrl = await Chapa.getInstance.startPayment(
-      enableInAppPayment: false,
+      enableInAppPayment: true,
+      context: context,
       amount: '789',
       currency: 'ETB',
+      onInAppPaymentSuccess: (successMsg) {
+        print('sucessmessage :$successMsg');
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => AfterPayment(),
+          ),
+        );
+      },
     );
     print('url$url');
     // Ensure the URL has a scheme
